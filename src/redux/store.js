@@ -3,6 +3,12 @@ import createSagaMiddleware from 'redux-saga'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import rootSaga from './sagas'
 
+
+// action types
+const API_CALL_REQUEST = "API_CALL_REQUEST";
+const API_CALL_SUCCESS = "API_CALL_SUCCESS";
+const API_CALL_FAILURE = "API_CALL_FAILURE";
+
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,6 +20,12 @@ const initialCardState = {
   count: 0,
   color: 'papayawhip'
 };
+
+const initialAPIReducerState = {
+  fetching: false,
+  dog: null,
+  error: null
+}
 
 const middleware = [sagaMiddleware];
 
@@ -32,10 +44,25 @@ const cardReducer = (state = initialCardState, action) => {
   }
 };
 
+const APIReducer = (state = initialAPIReducerState, action )=>{
+  switch (action.type) {
+    case API_CALL_REQUEST:
+      return { ...state, fetching: true, error: null };
+    case API_CALL_SUCCESS:
+      return { ...state, fetching: false, dog: action.dog };
+    case API_CALL_FAILURE:
+      return { ...state, fetching: false, dog: null, error: action.error };
+    default:
+      return state;
+  }
+}
+
+
 // Combine / Pass in all Individual reducers
 // This is what our state will look like in Redux DevTools (state.cardReducer, etc)
 const rootReducer = combineReducers({
-	cardReducer: cardReducer
+	cardReducer,
+  APIReducer
 });
 
 

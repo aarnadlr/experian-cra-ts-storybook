@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 // import Input from './components/Input';
 // import Header from './components/Header';
@@ -10,6 +10,13 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const count = useSelector((state: any) => state.cardReducer.count);
   const color = useSelector((state: any) => state.cardReducer.color);
+  const dogURL = useSelector((state: any) => state.APIReducer.dog);
+
+  useEffect(() => {
+    dispatch({
+      type: 'API_CALL_REQUEST'
+    });
+  }, []);
 
   const handleChangeColor = () => {
     dispatch({
@@ -26,11 +33,13 @@ const App: React.FC = () => {
       Count: {count}
       {/*<Input />*/}
       {/*<Header content={'Title!'} />*/}
-      <Box color={color} />
+      {/*<Box color={color} />*/}
+      {/*<IncrementButton />*/}
+      {/*<button onClick={handleChangeColor}>CHANGE COLOR</button>*/}
 
-      <IncrementButton />
+      <br/>
 
-      <button onClick={handleChangeColor}>CHANGE COLOR</button>
+      <img src={dogURL} alt="dog" width={90}/>
     </div>
   );
 };
