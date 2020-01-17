@@ -1,6 +1,8 @@
 import * as React from "react"
 import './App.css';
 import Input from "./components/Input";
+import Header from "./components/Header";
+import Box from "./components/Box";
 
 
 const App: React.FC = () => {
@@ -9,6 +11,10 @@ const App: React.FC = () => {
 
       hii
       <Input />
+
+      <Header content={'Title!'}/>
+
+      <Box color={'lavender'}/>
 
     </div>
   );
