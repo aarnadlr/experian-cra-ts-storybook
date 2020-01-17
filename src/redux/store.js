@@ -1,7 +1,7 @@
 import { combineReducers, applyMiddleware, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga'
 import { composeWithDevTools } from 'redux-devtools-extension';
-import mySaga from './sagas'
+import rootSaga from './sagas'
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -11,7 +11,8 @@ const initialCardState = {
   to: '',
   from: '',
   email: '',
-  count: 0
+  count: 0,
+  color: 'papayawhip'
 };
 
 const middleware = [sagaMiddleware];
@@ -19,8 +20,13 @@ const middleware = [sagaMiddleware];
 // Individual reducer, passed into `rootReducer`
 const cardReducer = (state = initialCardState, action) => {
   switch (action.type) {
-    case 'INC':
-      return { ...state, count: state.count + 1 };
+    case 'INCREMENT':
+      return { ...state, count: state.count + action.payload };
+    case 'CHANGE_COLOR':
+      return {
+        ...state,
+        color: action.payload
+      }
     default:
       return state;
   }
@@ -41,7 +47,7 @@ const store = createStore(
 
 
 // then run the saga
-sagaMiddleware.run(mySaga);
+sagaMiddleware.run(rootSaga);
 
 
 export default store;

@@ -1,23 +1,50 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
-// import Api from '...'
+import { call, all, put, takeEvery, takeLatest } from 'redux-saga/effects'
 
-// worker Saga: will be fired on USER_FETCH_REQUESTED actions
-function* fetchUser(action) {
+// worker Saga:
+function* workerSaga(action) {
    try {
-      const user = yield call(v=>v);
-      yield put({type: "USER_FETCH_SUCCEEDED", user: user});
+      // const user = yield call(v=>v);
+      yield put({type: "INCREMENT", payload: 9});
    } catch (e) {
-      yield put({type: "USER_FETCH_FAILED", message: e.message});
+      yield put({type: "ERROR"});
    }
 }
 
-/*
-  Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
-  Allows concurrent fetches of user.
-*/
-function* mySaga() {
-  yield takeEvery("USER_FETCH_REQUESTED", fetchUser);
+// worker Saga:
+function* workerSagaChangeColor(action) {
+   try {
+      // const user = yield call(v=>v);
+      yield put({type: "CHANGE_COLOR", payload: 'green'});
+   } catch (e) {
+      yield put({type: "ERROR"});
+   }
 }
 
 
-export default mySaga;
+/*
+  Watcher saga: will be fired on USER_FETCH_REQUESTED actions
+*/
+function* watcherSagaIncrement() {
+  yield takeEvery("INC", workerSaga);
+}
+
+/*
+  Watcher saga: will be fired on USER_FETCH_REQUESTED actions
+*/
+function* watcherSagaChangeColor() {
+  yield takeEvery("CHANGE_COLOR_SAGA", workerSagaChangeColor);
+}
+
+
+
+export default function* rootSaga() {
+  yield all([
+      watcherSagaIncrement,
+      watcherSagaChangeColor()
+  ]);
+}
+
+
+
+
+// export default mySaga;
