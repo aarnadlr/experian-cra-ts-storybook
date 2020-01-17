@@ -1,7 +1,7 @@
 import { call, all, put, takeEvery, takeLatest } from 'redux-saga/effects'
 
 // worker Saga:
-function* workerSaga(action) {
+function* workerSagaIncrement(action) {
    try {
       // const user = yield call(v=>v);
       yield put({type: "INCREMENT", payload: 9});
@@ -25,7 +25,7 @@ function* workerSagaChangeColor(action) {
   Watcher saga: will be fired on USER_FETCH_REQUESTED actions
 */
 function* watcherSagaIncrement() {
-  yield takeEvery("INC", workerSaga);
+  yield takeEvery("INC_SAGA", workerSagaIncrement);
 }
 
 /*
@@ -39,7 +39,7 @@ function* watcherSagaChangeColor() {
 
 export default function* rootSaga() {
   yield all([
-      watcherSagaIncrement,
+      watcherSagaIncrement(),
       watcherSagaChangeColor()
   ]);
 }

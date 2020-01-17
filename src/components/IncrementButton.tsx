@@ -6,7 +6,7 @@ const IncrementButton = () => {
 
   const handleClick = () => {
     dispatch({
-      type: 'INC'
+      type: 'INC_SAGA'
     });
   };
 
