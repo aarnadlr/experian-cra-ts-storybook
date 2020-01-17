@@ -3,6 +3,7 @@ import './App.css';
 import Input from "./components/Input";
 import Header from "./components/Header";
 import Box from "./components/Box";
+import IncrementButton from "./components/IncrementButton";
 
 
 const App: React.FC = () => {
@@ -16,6 +17,7 @@ const App: React.FC = () => {
 
       <Box color={'lavender'}/>
 
+      <IncrementButton/>
     </div>
   );
 };
