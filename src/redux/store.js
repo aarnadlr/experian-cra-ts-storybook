@@ -55,14 +55,30 @@ const APIReducer = (state = initialAPIReducerState, action )=>{
     default:
       return state;
   }
-}
+};
+
+const JSONReducer = (state = initialAPIReducerState, action )=>{
+  switch (action.type) {
+    case "JSON_CALL_REQUEST":
+      return { ...state, fetching: true, error: null };
+    case "JSON_CALL_SUCCESS":
+      return { ...state, fetching: false, json: action.payload };
+    case "JSON_CALL_FAILURE":
+      return { ...state, fetching: false, dog: null, error: action.error };
+    default:
+      return state;
+  }
+};
+
+
 
 
 // Combine / Pass in all Individual reducers
 // This is what our state will look like in Redux DevTools (state.cardReducer, etc)
 const rootReducer = combineReducers({
 	cardReducer,
-  APIReducer
+  APIReducer,
+  JSONReducer
 });
 
 

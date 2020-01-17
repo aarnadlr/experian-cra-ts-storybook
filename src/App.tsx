@@ -11,10 +11,15 @@ const App: React.FC = () => {
   const count = useSelector((state: any) => state.cardReducer.count);
   const color = useSelector((state: any) => state.cardReducer.color);
   const dogURL = useSelector((state: any) => state.APIReducer.dog);
+  const json = useSelector((state: any) => state.JSONReducer.json && state.JSONReducer.json.title);
 
   useEffect(() => {
     dispatch({
       type: 'API_CALL_REQUEST'
+    });
+
+    dispatch({
+      type: 'JSON_CALL_REQUEST'
     });
   }, []);
 
@@ -40,6 +45,12 @@ const App: React.FC = () => {
       <br/>
 
       <img src={dogURL} alt="dog" width={90}/>
+
+        <br/>
+
+        {
+            json && json
+        }
     </div>
   );
 };

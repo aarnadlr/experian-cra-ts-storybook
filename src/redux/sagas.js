@@ -11,6 +11,17 @@ function fetchDog() {
   });
 }
 
+function fetchJSON() {
+
+  // fetch('https://jsonplaceholder.typicode.com/todos/1')
+  // .then(response => response.json())
+  // .then(json => console.log(json))
+
+  return axios({
+    method: "get",
+    url: "https://jsonplaceholder.typicode.com/todos/1"
+  });
+}
 
 
 // worker Saga:
@@ -57,7 +68,7 @@ function* workerSagaAPI() {
     // call the fetchDog function. Store the response
     const response = yield call(fetchDog);
 
-
+    // console.log('response:', response.data)
     const dog = response.data.message;
 
     // dispatch a success action to the store with the dog URL
@@ -76,11 +87,38 @@ export function* watcherSagaAPI() {
 
 
 
+// worker saga: makes the api call when watcher saga sees the action
+function* workerSagaJSON() {
+  try {
+    // call the fetchDog function. Store the response
+    const response = yield call(fetchJSON);
+
+    // console.log('response:', response.data)
+    const json = response.data;
+
+    // dispatch a success action to the store with the dog URL
+    yield put({ type: "JSON_CALL_SUCCESS", payload: json });
+
+  } catch (error) {
+    // dispatch a failure action to the store with the error
+    yield put({ type: "JSON_CALL_FAILURE", error });
+  }
+}
+
+
+// WATCH FOR ACTION "API_CALL_REQUEST"
+export function* watcherSagaJSON() {
+  yield takeLatest("JSON_CALL_REQUEST", workerSagaJSON);
+}
+
+
+
 export default function* rootSaga() {
   yield all([
       watcherSagaIncrement(),
       watcherSagaChangeColor(),
-      watcherSagaAPI()
+      watcherSagaAPI(),
+      watcherSagaJSON()
   ]);
 }
 
