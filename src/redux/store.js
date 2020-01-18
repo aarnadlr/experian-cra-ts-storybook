@@ -1,13 +1,12 @@
 import { combineReducers, applyMiddleware, createStore } from 'redux';
-import createSagaMiddleware from 'redux-saga'
+import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import rootSaga from './sagas'
-
+import rootSaga from './sagas';
 
 // action types
-const API_CALL_REQUEST = "API_CALL_REQUEST";
-const API_CALL_SUCCESS = "API_CALL_SUCCESS";
-const API_CALL_FAILURE = "API_CALL_FAILURE";
+const API_CALL_REQUEST = 'API_CALL_REQUEST';
+const API_CALL_SUCCESS = 'API_CALL_SUCCESS';
+const API_CALL_FAILURE = 'API_CALL_FAILURE';
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -25,26 +24,26 @@ const initialAPIReducerState = {
   fetching: false,
   dog: null,
   error: null
-}
+};
 
 const middleware = [sagaMiddleware];
 
 // Individual reducer, passed into `rootReducer`
-const cardReducer = (state = initialCardState, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      return { ...state, count: state.count + action.payload };
-    case 'CHANGE_COLOR':
-      return {
-        ...state,
-        color: action.payload
-      }
-    default:
-      return state;
-  }
-};
+// const cardReducer = (state = initialCardState, action) => {
+//   switch (action.type) {
+//     case 'INCREMENT':
+//       return { ...state, count: state.count + action.payload };
+//     case 'CHANGE_COLOR':
+//       return {
+//         ...state,
+//         color: action.payload
+//       };
+//     default:
+//       return state;
+//   }
+// };
 
-const APIReducer = (state = initialAPIReducerState, action )=>{
+const APIReducer = (state = initialAPIReducerState, action) => {
   switch (action.type) {
     case API_CALL_REQUEST:
       return { ...state, fetching: true, error: null };
@@ -57,30 +56,47 @@ const APIReducer = (state = initialAPIReducerState, action )=>{
   }
 };
 
-const JSONReducer = (state = initialAPIReducerState, action )=>{
+const JSONReducer = (state = initialAPIReducerState, action) => {
   switch (action.type) {
-    case "JSON_CALL_REQUEST":
+    case 'JSON_CALL_REQUEST':
       return { ...state, fetching: true, error: null };
-    case "JSON_CALL_SUCCESS":
+    case 'JSON_CALL_SUCCESS':
       return { ...state, fetching: false, json: action.payload };
-    case "JSON_CALL_FAILURE":
+    case 'JSON_CALL_FAILURE':
       return { ...state, fetching: false, dog: null, error: action.error };
     default:
       return state;
   }
 };
 
+const initialCounterState = {
+  count: 11
+};
 
+const counterReducer = (state = initialCounterState, action) => {
+  switch (action.type) {
+    case 'DECREMENT':
+      // return { ...state, count: state.count - action.payload };
+      return { ...state, count: state.count - action.payload };
+    case 'INCREMENT':
+      // return { ...state, count: state.count + action.payload };
+      return { ...state, count: state.count + action.payload };
+    case 'RESET':
+      return { ...state, count: 0 };
 
+    default:
+      return state;
+  }
+};
 
 // Combine / Pass in all Individual reducers
 // This is what our state will look like in Redux DevTools (state.cardReducer, etc)
 const rootReducer = combineReducers({
-	cardReducer,
+  // cardReducer,
   APIReducer,
-  JSONReducer
+  JSONReducer,
+  counterReducer
 });
-
 
 const store = createStore(
   rootReducer,
@@ -88,9 +104,7 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
-
 // then run the saga
 sagaMiddleware.run(rootSaga);
-
 
 export default store;

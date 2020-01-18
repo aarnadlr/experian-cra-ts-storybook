@@ -5,13 +5,18 @@ import './App.css';
 import Box from './components/Box';
 import IncrementButton from './components/IncrementButton';
 import { useSelector, useDispatch } from 'react-redux';
+// import Counter from './components/Counter';
+// import Reset from "./components/Reset";
+import Parent from './components/Parent';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
-  const count = useSelector((state: any) => state.cardReducer.count);
-  const color = useSelector((state: any) => state.cardReducer.color);
-  const dogURL = useSelector((state: any) => state.APIReducer.dog);
-  const json = useSelector((state: any) => state.JSONReducer.json && state.JSONReducer.json.title);
+  // const count = useSelector((state: any) => state.cardReducer.count);
+  // const color = useSelector((state: any) => state.cardReducer.color);
+  // const dogURL = useSelector((state: any) => state.APIReducer.dog);
+  // const json = useSelector((state: any) => state.JSONReducer.json && state.JSONReducer.json.title);
+
+  const count = useSelector((state: any) => state.counterReducer.count);
 
   useEffect(() => {
     dispatch({
@@ -35,7 +40,7 @@ const App: React.FC = () => {
     <div className="App">
       Hi
       <br />
-      Count: {count}
+      {/*Count: {count}*/}
       {/*<Input />*/}
       {/*<Header content={'Title!'} />*/}
       {/*<Box color={color} />*/}
@@ -44,13 +49,58 @@ const App: React.FC = () => {
 
       <br/>
 
-      <img src={dogURL} alt="dog" width={90}/>
+      {/*<img src={dogURL} alt="dog" width={90}/>*/}
+
+      {/*  <br/>*/}
+
+      {/*  {*/}
+      {/*      json && json*/}
+      {/*  }*/}
+
+
+
+
+      {/*<Counter initialCount={count} incrementor={1}/>*/}
+
+      {/*<Reset count={count} upperBound={10} lowerBound={2}/>*/}
 
         <br/>
+        <br/>
+        <br/>
 
-        {
-            json && json
-        }
+        {/*<Parent count={count}>*/}
+
+        {/*    This is Parent One*/}
+        {/*    <Counter initialCount={count} incrementor={1}/>*/}
+
+        {/*    <Reset count={count} upperBound={5} lowerBound={-5}/>*/}
+
+        {/*</Parent>*/}
+
+
+
+
+        <Parent
+            // initialCount={count}
+            count={count}
+            incrementor={1}
+        />
+
+
+        <br/>
+        <br/>
+        <br/>
+
+
+        <Parent
+            // initialCount={count}
+            count={count+5}
+            incrementor={9}
+        />
+
+
+
+
     </div>
   );
 };

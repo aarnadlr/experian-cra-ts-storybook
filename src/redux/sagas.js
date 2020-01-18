@@ -13,9 +13,9 @@ function fetchDog() {
 
 function fetchJSON() {
 
-  // fetch('https://jsonplaceholder.typicode.com/todos/1')
+  // return fetch('https://jsonplaceholder.typicode.com/todos/1')
   // .then(response => response.json())
-  // .then(json => console.log(json))
+  // .then(json => json)
 
   return axios({
     method: "get",
@@ -113,12 +113,68 @@ export function* watcherSagaJSON() {
 
 
 
+
+function* workerSagaCounterDecrement(action) {
+   try {
+      yield put({type: "DECREMENT", payload: action.payload});
+   } catch (e) {
+      yield put({type: "ERROR"});
+   }
+}
+
+export function* watcherSagaCounterDecrement() {
+  yield takeLatest("DECREMENT_SAGA", workerSagaCounterDecrement);
+}
+
+
+
+
+
+
+
+function* workerSagaCounterIncrement(action) {
+   try {
+      yield put({type: "INCREMENT", payload: action.payload});
+   } catch (e) {
+      yield put({type: "ERROR"});
+   }
+}
+
+export function* watcherSagaCounterIncrement() {
+  yield takeLatest("INCREMENT_SAGA", workerSagaCounterIncrement);
+}
+
+
+
+
+function* workerSagaCounterReset(action) {
+   try {
+      // yield put({type: "RESET", payload: action.payload});
+      yield put({type: "RESET"});
+   } catch (e) {
+      yield put({type: "ERROR"});
+   }
+}
+
+export function* watcherSagaCounterReset() {
+  yield takeLatest("RESET_SAGA", workerSagaCounterReset);
+}
+
+
+
+
+
+
+
 export default function* rootSaga() {
   yield all([
       watcherSagaIncrement(),
       watcherSagaChangeColor(),
       watcherSagaAPI(),
-      watcherSagaJSON()
+      watcherSagaJSON(),
+      watcherSagaCounterIncrement(),
+      watcherSagaCounterDecrement(),
+      watcherSagaCounterReset()
   ]);
 }
 
