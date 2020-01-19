@@ -13,8 +13,8 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   // const count = useSelector((state: any) => state.cardReducer.count);
   // const color = useSelector((state: any) => state.cardReducer.color);
-  // const dogURL = useSelector((state: any) => state.APIReducer.dog);
-  // const json = useSelector((state: any) => state.JSONReducer.json && state.JSONReducer.json.title);
+  const dogURL = useSelector((state: any) => state.APIReducer.dog);
+  const json = useSelector((state: any) => state.JSONReducer.json && state.JSONReducer.json.title);
 
   const count = useSelector((state: any) => state.counterReducer.count);
 
@@ -51,11 +51,11 @@ const App: React.FC = () => {
 
       {/*<img src={dogURL} alt="dog" width={90}/>*/}
 
-      {/*  <br/>*/}
+        <br/>
 
-      {/*  {*/}
-      {/*      json && json*/}
-      {/*  }*/}
+        {
+            json && json
+        }
 
 
 
